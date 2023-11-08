@@ -1,0 +1,8 @@
+<div class="my-5" xmlns:th="http://www.thymeleaf.org">
+	<h1 class="text-center">Post List</h1>
+	<table class="table">
+		<tr th:each="post:${posts}">
+			<td th:text="${post.title}"></td>
+		</tr>
+	</table>
+</div>
