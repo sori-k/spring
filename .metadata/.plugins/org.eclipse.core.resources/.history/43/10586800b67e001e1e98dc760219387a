@@ -1,0 +1,11 @@
+<div class="my-5">
+	<h1 class="text-center mb-5">글쓰기</h1>
+	<form>
+		<input class="form-control mb-2" placeholder="제목을 입력하세요.">
+		<textarea rows="10" class="form-control" placeholder="내용을 입력하세요."></textarea>
+		<div class="text-center my-3">
+			<button class="btn btn-outline-dark px-4">등록</button>
+			<button class="btn btn-outline-secondary px-4">취소</button>
+		</div>
+	</form>
+</div>

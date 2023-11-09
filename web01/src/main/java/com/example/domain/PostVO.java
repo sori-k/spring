@@ -1,15 +1,13 @@
 package com.example.domain;
 
-import java.util.Date; //java에서 폼을 주려면 util로
+import java.util.Date;
 
-public class PostVO {
+public class PostVO extends UserVO{ //userVO를 상속(부모임) 다 가져다 쓸 수 있다.function
 	private int pid;
 	private String title;
 	private String body;
 	private String writer;
 	private Date regdate;
-	
-	
 	public int getPid() {
 		return pid;
 	}
@@ -39,6 +37,12 @@ public class PostVO {
 	}
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
+	}
+	
+	@Override
+	public String toString() {
+		return "PostVO [pid=" + pid + ", title=" + title + ", body=" + body + ", writer=" + writer + ", regdate="
+				+ regdate + "]";
 	}
 	
 	

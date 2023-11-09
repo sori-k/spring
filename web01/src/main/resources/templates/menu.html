@@ -10,9 +10,37 @@
           <a class="nav-link" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/posts/">Posts</a>
+          <a class="nav-link" href="/posts/list">Posts</a>
         </li>
       </ul>
+      <ul class="navbar-nav me-end mb-2 mb-lg-0">
+		<li class="nav-item" id="login">
+          <a class="nav-link" href="/users/login">로그인</a>
+        </li>
+        <li class="nav-item" id="mypage" style="display: none;">
+          <a class="nav-link" href="/users/mypage">email</a>
+        </li>
+        <li class="nav-item" id="logout" style="display: none;">
+          <a class="nav-link" href="/users/logout">로그아웃</a>
+        </li>
+	  </ul>
     </div>
   </div>
 </nav>
+
+<script>
+	if(sessionStorage.getItem("uid")){
+		$("#login, #mypage, #logout").toggle();
+		$("#mypage a").html(sessionStorage.getItem("uid"));
+	}
+	
+	$("#logout a").on("click", function(e){
+		e.preventDefault();
+		
+		if(confirm("정말로 로그아웃할까요?")){
+			sessionStorage.clear();
+			location.href="/";
+		}
+	});
+	
+</script>

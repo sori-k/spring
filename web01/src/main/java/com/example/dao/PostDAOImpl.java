@@ -12,12 +12,17 @@ import com.example.domain.PostVO;
 @Repository
 public class PostDAOImpl implements PostDAO{
 	@Autowired
-	SqlSession session;
+	SqlSession session; //데이터베이스 커넥션에 대한 정복가 들어있다.
 	String namespace="com.example.mapper.PostMapper";
 	
 	@Override
-	public List<HashMap<String, Object>> list() { //결과가 여러개라서 HashMap앞에 List가 붙음
+	public List<HashMap<String, Object>> list() {
 		return session.selectList(namespace + ".list");
+	}
+
+	@Override
+	public HashMap<String, Object> read(int pid) {
+		return session.selectOne(namespace + ".read", pid); //mapper에서 보낸 #{pid} 랑 똑같은 이름으로 해야함
 	}
 
 	@Override
@@ -27,19 +32,14 @@ public class PostDAOImpl implements PostDAO{
 	}
 
 	@Override
-	public void update(PostVO vo) {
-		session.update(namespace + ".update", vo);
+	public void delete(int pid) {
+		session.delete(namespace + ".delete", pid);
 		
 	}
 
 	@Override
-	public HashMap<String, Object> read(int pid) { //read는 결과가 하나
-		return session.selectOne(namespace + ".read", pid);
-	}
-
-	@Override
-	public void delete(int pid) {
-		session.delete(namespace + ".delete", pid);
+	public void update(PostVO vo) {
+		session.update(namespace + ".update", vo);
 		
 	}
 

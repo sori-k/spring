@@ -1,0 +1,14 @@
+package com.example.dao;
+
+import java.util.HashMap;
+import java.util.List;
+
+public class PostDAOImpl implements PostDAO{
+
+	@Override
+	public List<HashMap<String, Object>> list() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

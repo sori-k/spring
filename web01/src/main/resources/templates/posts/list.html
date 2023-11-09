@@ -1,19 +1,24 @@
 <div class="my-5">
-	<h1 class="text-center mb-5">Post List</h1>
-	<div class="text-end">
-		<a href="/posts/insert" class="btn btn-dark sm px-3">글쓰기</a>
+	<h1 class="text-center mb-5">게시글</h1>
+	<div class="text-end mb-2">
+		<a href="/posts/insert" class="btn btn-dark btn-sm">글쓰기</a>
 	</div>
-	<div id="div_posts"></div>
+	<div id="div_posts">
+		
+	</div>
 </div>
 
 <script id="temp_posts" type="x-handlebars-template">
-	<table class="table">
+	<table class="table table-striped">
 	{{#each .}}
 		<tr>
-			<td>{{pid}}</td>
-			<td><a href="/posts/read?pid={{pid}}">{{title}}</a></td>
-			<td>{{fmtdate}}</td>
+			<td>
+				<div class="ellipsis">
+					[{{pid}}] <a href="/posts/read?pid={{pid}}">{{title}}</a>
+				</div>
+			</td>
 			<td>{{uname}} ({{writer}})</td>
+			<td>{{fmtdate}}</td>
 		</tr>
 	{{/each}}
 	</table>
@@ -21,6 +26,7 @@
 
 <script>
 	getPosts();
+	
 	function getPosts(){
 		$.ajax({
 			type:"get",

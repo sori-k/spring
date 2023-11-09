@@ -2,36 +2,38 @@
 	<h1 class="text-center mb-5">글쓰기</h1>
 	<form name="frm">
 		<input name="title" class="form-control mb-2" placeholder="제목을 입력하세요.">
-		<textarea name="body" class="form-control" rows="10" placeholder="내용을 입력하세요."></textarea>
-		<div class="text-center mt-3">
-			<button type="submit" class="btn btn-success">저장</button>
-			<button type="reset" class="btn btn-secondary">취소</button>
+		<textarea name="body" rows="10" class="form-control" placeholder="내용을 입력하세요."></textarea>
+		<div class="text-center my-3">
+			<button class="btn btn-outline-dark px-4">등록</button>
+			<button type="reset" class="btn btn-outline-secondary px-4">취소</button>
 		</div>
 	</form>
 </div>
 
 <script>
-	$(frm).on("submit", function(e){  <!-- $가 붙은건 제이쿼리 -->
+	$(frm).on("submit", function(e){
 		e.preventDefault();
-		const title = $(frm.title).val();
-		const body = $(frm.body).val();
-		const uid = "sky";
+		
+		const title=$(frm.title).val();
+		const body=$(frm.body).val();
+		const writer="black";
 		
 		if(title == ""){
-			alert("제목을 입력하세요!");
+			alert("제목을 입력하세요.");
 			$(frm.title).focus();
 			return;
 		}
-		if(confirm("저장할까요?")){
-			//저장 코드 작성
+		if(confirm("게시글을 등록할까요?")){
+			const data={title, body, writer};
 			$.ajax({
-				type: "post",
-				url: "/posts/insert",
-				data: {title, body, writer:uid},
+				type:"post",
+				url:"insert",
+				data: JSON.stringify(data), //데이터를 string 타입으로 변환해서 넣는
+				contentType:"application/json",
 				success:function(){
-					location.href="/posts/";
+					location.href="/posts/list";
 				}
-			})
+			});
 		}
 	});
 </script>

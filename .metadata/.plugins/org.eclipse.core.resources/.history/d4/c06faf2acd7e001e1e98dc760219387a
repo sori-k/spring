@@ -1,0 +1,39 @@
+<div class="my-5">
+	<h1 class="text-center mb-5">글쓰기</h1>
+	<form name="frm">
+		<input name="title" class="form-control mb-2" placeholder="제목을 입력하세요.">
+		<textarea name="body" rows="10" class="form-control" placeholder="내용을 입력하세요."></textarea>
+		<div class="text-center my-3">
+			<button class="btn btn-outline-dark px-4">등록</button>
+			<button type="reset" "btn btn-outline-secondary px-4">취소</button>
+		</div>
+	</form>
+</div>
+
+<script>
+	$(frm).on("submit", function(e){
+		e.preventDefault();
+		
+		const title=$(frm.title).val();
+		const body=$(frm.body).val();
+		const writer="black";
+		
+		if(title == ""){
+			alert("제목을 입력하세요.");
+			$(frm.title).focus();
+			return;
+		}
+		if(confirm("게시글을 등록할까요?")){
+			const data={title, body, writer};
+			$.ajax({
+				type:"post",
+				url:"insert",
+				data: JSON.stringify(data), //데이터를 string 타입으로 변환해서 넣는
+				contentType:"application/json",
+				success:function(){
+					location.href="/posts/list";
+				}
+			});
+		}
+	});
+</script>
