@@ -25,4 +25,28 @@ public class UserDAOImpl implements UserDAO{
 		return session.selectOne(namespace + ".login", uid);
 	}
 
+	@Override
+	public void update(UserVO vo) {
+		session.update(namespace + ".update", vo);
+		
+	}
+
+	@Override
+	public void updatePhoto(UserVO vo) {
+		session.update(namespace + ".update_photo", vo);
+		
+	}
+
+	@Override
+	public void updatePassword(UserVO vo) {
+		session.update(namespace + ".update_password", vo);
+		
+	}
+
+	@Override
+	public void insert(UserVO vo) {
+		session.insert(namespace + ".insert", vo);
+		
+	}
+
 }

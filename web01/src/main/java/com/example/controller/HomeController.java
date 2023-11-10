@@ -1,12 +1,21 @@
 package com.example.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+//import java.util.HashMap;
+//import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.ResponseEntity;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 
 @Controller
 public class HomeController {
@@ -30,4 +39,19 @@ public class HomeController {
 		model.addAttribute("pageName", "about"); //(변수, 값)을 model 안에 넣어서 
 		return "home";
 	}
+
+   @GetMapping("/display")
+   public ResponseEntity<Resource> display(String file) { //localhost:8080/display?file=경로(보고싶은 이미지)
+      Resource resource = new FileSystemResource("c:" + file);
+      if(!resource.exists()) 
+         return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+      HttpHeaders header = new HttpHeaders();
+      try{
+         Path filePath = Paths.get("c:" + file);
+         header.add("Content-type", Files.probeContentType(filePath));
+      }catch(Exception e) {
+         System.out.println("오류:" + e.toString());
+      }
+      return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+   }
 }

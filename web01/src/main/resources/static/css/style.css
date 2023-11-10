@@ -23,3 +23,9 @@
 	width: 120px;
 	justify-content: center;
 }
+
+.photo {
+	border-radius: 50%;
+	border: 1px solid gray;
+	cursor: pointer;
+}
