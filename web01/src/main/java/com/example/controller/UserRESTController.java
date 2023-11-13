@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.example.dao.UserDAO;
 import com.example.domain.UserVO;
+//데이터 출력
 
 @RestController
 @RequestMapping("/users")
@@ -41,7 +42,7 @@ public class UserRESTController {
 		}
 		return result;
 	}
-	
+
 	//데이터 업데이트
 	@PostMapping("/update")
 	public void update(@RequestBody UserVO vo) {
@@ -49,28 +50,29 @@ public class UserRESTController {
 		dao.update(vo);
 	}
 	
-   //사진업로드 컨트롤러
-   @PostMapping("/photo")
-   public void photo(String uid, MultipartHttpServletRequest multi)throws Exception {  //업로드한 파일이 multi로 들어감
-      MultipartFile file=multi.getFile("file"); // 파일업로드 -> multi -> file //multi 에 있는 파일을 받아서 파일로
-      String filePath = "/upload/photo/"; //filepath 지정
-      String fileName = System.currentTimeMillis() + ".jpg";
-      file.transferTo(new File("c:" + filePath + fileName));
-      
-      UserVO vo = new UserVO();
-      vo.setUid(uid);
-      vo.setPhoto(filePath + fileName);
-      dao.updatePhoto(vo);
-   }
-   
-   //비밀번호 변경
-   @PostMapping("/password")
-   public void password(@RequestBody UserVO vo) {
-	   dao.updatePassword(vo);
-   }
-   
-   @PostMapping("/insert")
-   public void insert(@RequestBody UserVO vo) {
-	   dao.insert(vo);
-   }
+	//사진업로드 컨트롤러
+	@PostMapping("/upload")
+	public void upload(String uid, MultipartHttpServletRequest multi)throws Exception {
+		MultipartFile file=multi.getFile("file"); // 파일업로드 -> multi -> file //multi 에 있는 파일을 받아서 파일로
+		String filePath = "/upload/photo/"; //filepath 지정
+		String fileName = System.currentTimeMillis() + ".jpg"; //현재 시간(초 포함) 기준 이름 지정 
+		file.transferTo(new File("c:" + filePath + fileName));
+		
+		UserVO vo = new UserVO();
+	    vo.setUid(uid);
+	    vo.setPhoto(filePath + fileName);
+	    dao.photo(vo);
+	}
+	
+	//비밀번호 변경
+	@PostMapping("/password")
+	public void password(@RequestBody UserVO vo) {
+		dao.password(vo);
+	}
+	
+	@PostMapping("/insert")
+	public void insert(@RequestBody UserVO vo) {
+		//System.out.println(vo.toString());
+		dao.insert(vo);
+	}
 }

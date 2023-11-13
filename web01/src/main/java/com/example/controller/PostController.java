@@ -30,6 +30,9 @@ public class PostController {
 	
 	@GetMapping("/update")
 	public String update(Model model, int pid) {
+		System.out.println("=======================");
+		System.out.println(pid);
+		System.out.println("=======================");
 		model.addAttribute("pid", pid);
 		model.addAttribute("pageName", "posts/update");
 		return "home";

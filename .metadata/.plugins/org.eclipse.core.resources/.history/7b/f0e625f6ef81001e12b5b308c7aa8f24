@@ -1,0 +1,105 @@
+<div class="my-5">
+	<h1 class="text-center mb-5">회원가입</h1>
+	<div class="row justify-content-center">
+		<div class="col-lg-6">
+			<form name="frm" class="card p-3">
+				<div class="input-group mb-2">
+					<span class="input-group-text">아이디</span>
+					<input name="uid" class="form-control">
+					<button id="btn-check" type="button" class="btn btn-outline-dark">중복체크</button>
+				</div>
+				<div class="input-group mb-2">
+					<span class="input-group-text">비밀번호</span>
+					<input name="upass" class="form-control">
+				</div>
+				<div class="input-group mb-2">
+					<span class="input-group-text">이름</span>
+					<input name="uname" class="form-control">
+				</div>
+				<div class="input-group mb-2">
+					<span class="input-group-text">전화번호</span>
+					<input name="phone" class="form-control">
+				</div>
+				<div class="input-group mb-2">
+					<span class="input-group-text">주소</span>
+					<input name="address1" class="form-control" readonly>
+					<button id="btn-search" class="btn btn-outline-dark" type="button">검색</button>
+				</div>
+				<div><input name="address2" class="form-control" placeholder="상세주소"></div>
+				<div class="text-center mt-3">
+					<button class="btn btn-success">가입</button>
+					<button class="btn btn-secondary" type="reset">취소</button>
+				</div>
+			</form>
+		</div>		
+	</div>
+</div>
+
+<script>
+	let check = false;
+	$(frm).on("submit", function(e){
+		e.preventDefault();
+		const uid=$(frm.uid).val();
+		const upass=$(frm.upass).val();
+		const uname=$(frm.uname).val();
+		const phone=$(frm.phone).val();
+		const address1=$(frm.address1).val();
+		const address2=$(frm.address2).val();
+		
+		if(uid == "" || upass == "" || uname == ""){
+			alert("아이디, 비밀번호, 이름을 꼭 입력하세요!");
+		}else if(check == false){
+			alert("아이디 중복체크를 하세요!");
+		}else{
+			if(confirm("회원가입을 할까요?")){
+				//회원가입 작업
+				$.ajax({
+					type:"post",
+					url:"/users/insert",
+					data:JSON.stringify({uid, upass, uname, phone, address1, address2}),
+					contentType:"application/json",
+					success:function(){
+						alert("회원가입이 성공했습니다.");
+						location.href="/users/login";
+					}
+				});
+			}
+		}
+	});
+	
+	$("#btn-check").on("click", function(){
+		const uid=$(frm.uid).val();
+		const upass=$(frm.upass).val();
+		//중복체크
+		$.ajax({
+			type:"post",
+			url:"/users/login",
+			data:JSON.stringify({uid, upass}),
+			contentType:"application/json",
+			success:function(data){
+				if(data == 0){
+					alert("사용가능한 아이디입니다.");
+					check=true;
+				}else{
+					alert("이미 사용중인 아이디입니다.");
+				}
+			}
+		});
+	});
+	
+	$(frm.uid).on("change", function(){
+		check=false;
+	});
+	
+	
+	$("#btn-search").on("click", function(){
+		new daum.Postcode({
+			oncomplete:function(data){
+				//console.log(data);
+				const address=data.address;
+				const building=data.buildingName ? data.buildingName : '';
+				$(frm.address1).val(`${address}(${building}`);
+			}
+		}).open();
+	});
+</script>

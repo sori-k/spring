@@ -43,4 +43,22 @@ public class PostDAOImpl implements PostDAO{
 		
 	}
 
+	@Override
+	public List<HashMap<String, Object>> list1(int page, int size, String key, String query) {
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("start", (page-1)*size);
+		map.put("size", size);
+		map.put("key", key);
+		map.put("query", query);
+		return session.selectList(namespace + ".list1", map);
+	}
+
+	@Override
+	public int total(String key, String query) {
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("key", key);
+		map.put("query", query);
+		return session.selectOne(namespace + ".total", map);
+	}
+
 }

@@ -32,14 +32,14 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	@Override
-	public void updatePhoto(UserVO vo) {
-		session.update(namespace + ".update_photo", vo);
+	public void photo(UserVO vo) {
+		session.update(namespace + ".photo", vo);
 		
 	}
 
 	@Override
-	public void updatePassword(UserVO vo) {
-		session.update(namespace + ".update_password", vo);
+	public void password(UserVO vo) {
+		session.update(namespace + ".password", vo);
 		
 	}
 
@@ -48,5 +48,6 @@ public class UserDAOImpl implements UserDAO{
 		session.insert(namespace + ".insert", vo);
 		
 	}
+
 
 }

@@ -40,6 +40,7 @@ public class HomeController {
 		return "home";
 	}
 
+	//서버에 있는 이미지를 출력해주는 컨트롤러
    @GetMapping("/display")
    public ResponseEntity<Resource> display(String file) { //localhost:8080/display?file=경로(보고싶은 이미지)
       Resource resource = new FileSystemResource("c:" + file);
