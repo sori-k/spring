@@ -14,6 +14,7 @@
 				<button class="w-100 btn btn-secondary">로그인</button>
 				<div class="text-end mt-3">
 					<a href="/users/insert">회원가입</a>
+					<input name="login" type="checkbox" class="ms-3">로그인상태유지
 				</div>
 			</form>
 		</div>
@@ -48,9 +49,17 @@
 					alert("비밀번호가 일치하지 않습니다.");
 				}else if(data == 0){
 					alert("아이디가 존재하지 않습니다.");
-				}else{
+				}else{ //로그인 성공했을 때
+					const isLogin = $(frm.login).is(":checked"); //로그인 상태가 체크되었는지 
+					if(isLogin){
+						setCookie("uid", uid, 1); //uid를 하루 저장
+					}
 					sessionStorage.setItem("uid", uid);
-					location.href="/";
+					if(sessionStorage.getItem("target")){
+						location.href=sessionStorage.getItem("target");
+					}else{
+						location.href="/";
+					}
 				}
 			}
 		});

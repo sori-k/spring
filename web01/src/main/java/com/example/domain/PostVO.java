@@ -8,6 +8,21 @@ public class PostVO extends UserVO{ //userVO를 상속(부모임) 다 가져다 
 	private String body;
 	private String writer;
 	private Date regdate;
+	private int viewcnt;
+	private int commcnt;
+	
+	public int getCommcnt() {
+		return commcnt;
+	}
+	public void setCommcnt(int commcnt) {
+		this.commcnt = commcnt;
+	}
+	public int getViewcnt() {
+		return viewcnt;
+	}
+	public void setViewcnt(int viewcnt) {
+		this.viewcnt = viewcnt;
+	}
 	public int getPid() {
 		return pid;
 	}

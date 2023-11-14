@@ -1,0 +1,38 @@
+<div class="my-5">
+	<h1 class="text-center mb-5">댓글관리</h1>
+	<div class="div_comments"></div>
+</div>
+
+<script id="temp_comments" type="x-handlebars-template">
+	{{#each .}}
+		<div class="row">
+			<div class="col-2">
+				<img src="/display?file={{photo}}" width="30" class="photo">
+				<div>{{uname}}</div>
+			</div>
+			<div class="col">
+				{{body}}
+			</div>
+		</div>
+		<hr>
+	{{/each}}
+</script>
+
+<script>
+	let page = 1;
+	let size = 3;
+	const post_id = "[[${param.pid}]]";
+	
+	getComments();
+	function getComments(){
+		$.ajax({
+			type:"get",
+			url:"/comments/list.json",
+			data:{page, size, pid:post_id},
+			success:function(data){
+				const temp=Handlebars.compile($("#temp_comments").html());
+				$("#div_comments").html(temp(data));
+			}
+		})
+	}
+</script>
