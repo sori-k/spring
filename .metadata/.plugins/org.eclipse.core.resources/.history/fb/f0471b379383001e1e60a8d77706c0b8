@@ -1,0 +1,51 @@
+<div class="my-5">
+	<h1 class="text-center mb-5">교수목록</h1>
+	<div class="row">
+		<div class="col-6">
+			<form name="frm" class="input-group">
+				<select class="form-select" name="key">
+					<option value="pcode">교수번호</option>
+					<option value="pname">교수이름</option>
+					<option value="dept">교수학과</option>
+					<option value="title">교수직책</option>
+				</select>
+				<input name="query" class="form-control ms-2" placeholder="검색어">
+				<button class="btn btn-outline-dark">검색</button>
+			</form>
+		</div>
+		<div class="text-end col">
+			<a href="/pro/insert" class="btn btn-outline-dark px-4">교수등록</a>
+		</div>
+	</div>
+	<hr>
+	<div id="div_pro"></div>
+</div>
+
+<script id="temp_pro" type="x-handlebars-template">
+	<table class="table">
+		{{#each .}}
+		<tr>
+			<td>{{pcode}}</td>
+			<td><a href="/pro/read?pcode={{pcode}}">{{pname}}</a></td>
+			<td>{{dept}}</td>
+			<td>{{fmtdate}}</td>
+			<td class="text-end">{{fmtsalary}}원</td>
+		</tr>
+		{{/each}}
+	</table>
+</script>
+
+<script>
+	getList();
+	
+	function getList(){
+		$.ajax({
+			type:"get",
+			url:"/pro/list.json",
+			success:function(data){
+				const temp = Handlebars.compile($("#temp_pro").html());
+				$("#div_pro").html(temp(data));
+			}
+		});
+	}
+</script>

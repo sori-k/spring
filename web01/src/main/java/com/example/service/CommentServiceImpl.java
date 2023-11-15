@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.dao.CommentDAO;
+import com.example.dao.CommentDAOImpl;
 import com.example.dao.PostDAO;
 import com.example.domain.CommentVO;
 
