@@ -11,7 +11,7 @@ public class ProController {
 	
 	@GetMapping("/list")
 	public String list(Model model) {
-		model.addAttribute("pageName", "pro/list.html");
+		model.addAttribute("pageName", "pro/list");
 		return "home";
 	}
 	
@@ -23,7 +23,7 @@ public class ProController {
 	
 	@GetMapping("/read")
 	public String read(Model model) {
-		model.addAttribute("pageName", "pro/read.html");
+		model.addAttribute("pageName", "pro/read");
 		return "home";
 	}
 	

@@ -11,7 +11,7 @@ public class QueryVO {
 		return start;
 	}
 	public void setStart(int start) {
-		this.start = start;
+		this.start = (page-1) * size;
 	}
 	public String getKey() {
 		return key;

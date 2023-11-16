@@ -1,0 +1,37 @@
+<div class="my-5">
+	<h1 class="text-center mb-5">학생목록</h1>
+	<div id="div_stu"></div>
+</div>
+
+<script id="temp_stu" type="x-handlebars-template">
+	<table class="table">
+		{{#each .}}
+		<tr>
+			<td>{{scode}}</td>
+			<td><a href="/stu/read?scode={{scode}}">{{sname}}</a></td>
+			<td>{{dept}}</td>
+			<td>{{year}}</td>
+			<td>{{fmtdate}}</td>
+			<td>{{pname}} ({{advisor}})</td>
+		</tr>
+		{{/each}}
+	</table>
+</script>
+
+<script>
+	let page = 1;
+	const size = 3;
+	
+	getList();
+	function getList(){
+		$.ajax({
+			type:"get",
+			url:"/stu/list.json",
+			data:{size, page},
+			success:function(data){
+				const temp = Handlebars.compile($("#temp_stu").html());
+				$("#div_stu").html(temp(data));
+			}
+		})
+	}
+</script>

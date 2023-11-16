@@ -13,13 +13,13 @@ public class UserController {
 	
 	@GetMapping("/login")
 	public String login(Model model) {
-		model.addAttribute("pageName", "users/login.html");
+		model.addAttribute("pageName", "users/login");
 		return "home"; //login.html을 담아서 
 	}
 	
 	@GetMapping("/mypage")
 	public String mypage(Model model) {
-		model.addAttribute("pageName", "users/mypage.html");
+		model.addAttribute("pageName", "users/mypage");
 		return "home.html";
 	}
 	

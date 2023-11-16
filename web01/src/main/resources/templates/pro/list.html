@@ -20,6 +20,7 @@
 	</div>
 	<hr>
 	<div id="div_pro"></div>
+	<div id="pagination" class="pagination justify-content-center mt-5"></div>
 </div>
 
 <script id="temp_pro" type="x-handlebars-template">
@@ -44,10 +45,10 @@
 	$(frm).on("submit", function(e){
 		e.preventDefault();
 		page = 1;
-		getList();
+		getTotal();
 	});
 	
-	getList();
+	getTotal();
 	
 	function getTotal(){ //갯수 구하는
 		const query = $(frm.query).val();
@@ -58,6 +59,15 @@
 			data:{query, key},
 			success:function(data){
 				$("#total").html(`검색수: ${data}건`);
+				if(data > size){
+					$("#pagination").show();
+					//total 페이지 구하기
+					const totalPages = Math.ceil(data/size);
+	                $("#pagination").twbsPagination("changeTotalPages", totalPages, page)
+				}else{
+					$("#pagination").hide();
+					getList();
+				}
 			}
 		});
 	}
@@ -65,15 +75,33 @@
 	function getList(){ //목록 구하는
 		const query = $(frm.query).val();
 		const key = $(frm.key).val();
-		getTotal();
 		$.ajax({
 			type:"get",
 			url:"/pro/slist.json",
 			data:{page, size, query, key},
 			success:function(data){
-				const temp = Handlebars.compile($("#temp_pro").html());
-				$("#div_pro").html(temp(data));
+				if(data == 0){
+					$("#div_pro").html("<h3 class='text-center my-5'>검색자료가 존재하지 않습니다.</h3>");
+				}else{
+					const temp = Handlebars.compile($("#temp_pro").html());
+					$("#div_pro").html(temp(data));
+				}
 			}
 		});
 	}
+	
+	$('#pagination').twbsPagination({
+	    totalPages:10, //총 페이지 번호 수
+	    visiblePages: 5, // 하단에서 한 번에 보여 지는 페이지 번호 수
+	    startPage : 1, // 시작 시 표시되는 현재 페이지
+	    initiateStartPageClick: false, // 플러그인이 시작 시 페이지 버튼 클릭 여부 (default : true) 
+	    first : '<<', // 페이지네이션 버튼 중 처음으로 돌아가는 버튼에 쓰여 있는 텍스트
+	    prev : '<', // 이전 페이지 버튼에 쓰여 있는 텍스트
+	    next : '>', // 다음 페이지 버튼에 쓰여 있는 텍스트
+	    last : '>>', // 페이지네이션 버튼 중 마지막으로 가는 버튼에 쓰여 있는 텍스트
+	    onPageClick: function (event, clickPage) {
+	        page=clickPage;
+	        getList(); 
+	    }
+	});
 </script>
