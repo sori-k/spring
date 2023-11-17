@@ -18,7 +18,7 @@ public class CouRestController {
 	@Autowired
 	CouDAO dao;
 	
-	@GetMapping("/list.json")
+	@GetMapping("/list.json") //강좌 목록
 	public HashMap<String, Object> list(QueryVO vo){
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("list", dao.list(vo));

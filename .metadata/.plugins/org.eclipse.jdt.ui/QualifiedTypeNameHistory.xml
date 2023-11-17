@@ -5,7 +5,6 @@
     <fullyQualifiedTypeName name="com.example.domain.PostVO"/>
     <fullyQualifiedTypeName name="com.example.dao.UserDAO"/>
     <fullyQualifiedTypeName name="com.example.domain.UserVO"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="java.util.HashMap"/>
     <fullyQualifiedTypeName name="com.example.domain.CommentVO"/>
     <fullyQualifiedTypeName name="org.springframework.jdbc.datasource.DataSourceTransactionManager"/>
@@ -30,4 +29,5 @@
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
     <fullyQualifiedTypeName name="com.example.dao.StuDAO"/>
     <fullyQualifiedTypeName name="com.example.domain.QueryVO"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
 </qualifiedTypeNameHistroy>

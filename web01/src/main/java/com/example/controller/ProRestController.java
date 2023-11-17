@@ -56,8 +56,11 @@ public class ProRestController {
 	}
 	
 	@GetMapping("/slist.json")
-	public List<HashMap<String, Object>> slist(QueryVO vo){
-		return dao.slist(vo);
+	public HashMap<String, Object> slist(QueryVO vo){
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("list", dao.slist(vo));
+		map.put("total", dao.total(vo));
+		return map;
 	}
 	
 	@GetMapping("/total")

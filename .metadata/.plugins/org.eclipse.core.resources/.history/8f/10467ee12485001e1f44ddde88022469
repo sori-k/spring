@@ -1,0 +1,127 @@
+<div class="my-5">
+	<h1 class="text-center mb-5">학생정보</h1>
+	<nav>
+  		<div class="nav nav-tabs" id="nav-tab" role="tablist">
+		    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" 
+		    	role="tab" aria-controls="nav-home" aria-selected="true">학생정보</button>
+		    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" 
+    			role="tab" aria-controls="nav-profile" aria-selected="false">수강신청</button>
+  		</div>
+	</nav>
+	<div class="tab-content" id="nav-tabContent">
+		<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+			<div id="div_stu" class="row justify-content-center mt-5"></div>
+		</div>
+		<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+		  	<div id="div_cou"></div>
+		  	<div id="div_enroll" class="mt-5"></div>
+		</div>
+	</div>
+</div>
+
+<script id="temp_cou" type="x-handlebars-template">
+	<!-- 강좌 목록 출력 -->
+	<select class="form-select">
+		{{#each list}}
+			<option value="{{lcode}}">{{lname}} {{persons}}/{{capacity}}</option>
+		{{/each}}
+	</select>
+</script>
+
+<script id="temp_stu" type="x-handlebars-template">
+	<div class="col-md-6">
+		<div class="card p-3">
+			<div>학생이름: {{sname}} ({{scode}})</div><hr>
+			<div>학생학과: {{dept}} ({{fmtdate}})</div><hr>
+			<div>지도교수: {{pname}} ({{advisor}})</div><hr>
+			<div class="text-center">
+				<a href="/stu/update?scode={{scode}}" class="btn btn-success">정보수정</a>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="temp_enroll" type="x-handlebars-template">
+	<table class="table">
+		<tr class="text-center">
+			<th>강좌이름 / 강좌코드</th>
+			<th>강의시간 / 강의실</th>
+			<th>담당교수 </th>
+			<th>신청인원 / 최대수강인원수</th>
+			<th>점수</th>
+		</tr>
+		{{#each .}}
+		<tr class="text-center">
+			<td>{{lname}} ({{lcode}})</td>
+			<td>{{hours}} ({{room}})</td>
+			<td>{{pname}} ({{instructor}})</td>
+			<td>{{persons}} ({{capacity}})</td>
+			<td>{{grade}}</td>
+			<td><button class="btn-delete btn btn-danger btn-sm" lcode="{{lcode}}">취소</button></td>
+		</tr>
+		{{/each}}
+	</table>
+</script>
+
+<script>
+	const scode = "[[${param.scode}]]";
+	
+	//학생정보 시 수강신청 탭이 먼저 나오게
+	$("#nav-profile-tab").click();
+	
+	getCou();
+	
+	//취소버튼 클릭했을떄
+	$("#div_enroll").on("click", ".btn-delete", function(){
+		const lcode = $(this).attr("lcode");
+		
+		if(confirm(`${scode}학생의 ${lcode} 강좌를 취소할까요?`)){
+			$.ajax({
+				type:"get",
+				url:"/enroll/delete",
+				data:{scode, lcode},
+				success:function(data){
+					alert("해당 강좌가 취소되었습니다.");
+					getEnroll();
+				}
+			})
+		}
+	});
+	
+	//강좌 목록 가져오는 함수
+	function getCou(){
+		$.ajax({
+			type:"get",
+			url:"/cou/list.json",
+			data:{page:1, size:100, key:"lcode", query:""},
+			success:function(data){
+				console.log(data);
+			}
+		});
+	}
+	
+	$(window).on("load", function(){
+		$.ajax({
+			type:"get",
+			url:"/stu/read.json",
+			data:{scode},
+			success:function(data){
+				const temp = Handlebars.compile($("#temp_stu").html());
+				$("#div_stu").html(temp(data));
+			}
+		});
+		getEnroll();
+	});
+	
+	function getEnroll(){ //수강신청 할때마다 실행
+		$.ajax({
+			type:"get",
+			url:"/stu/enroll.json",
+			data:{scode},
+			success:function(data){
+				const temp = Handlebars.compile($("#temp_enroll").html());
+				$("#div_enroll").html(temp(data));
+			}
+		})
+	}
+</script>

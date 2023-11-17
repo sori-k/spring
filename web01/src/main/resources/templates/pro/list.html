@@ -25,7 +25,7 @@
 
 <script id="temp_pro" type="x-handlebars-template">
 	<table class="table">
-		{{#each .}}
+		{{#each list}}
 		<tr>
 			<td>{{pcode}}</td>
 			<td><a href="/pro/read?pcode={{pcode}}">{{pname}}</a></td>
@@ -40,54 +40,45 @@
 <script>
 	let page = 1;
 	const size = 3;
+	let total = 0;
 
+	getList();
+	
 	//검색할때마다 리스트 다시 가져오기
 	$(frm).on("submit", function(e){
 		e.preventDefault();
-		page = 1;
-		getTotal();
+		getList();
 	});
 	
-	getTotal();
-	
-	function getTotal(){ //갯수 구하는
-		const query = $(frm.query).val();
+	function getList(){
 		const key = $(frm.key).val();
-		$.ajax({
-			type:"get",
-			url:"/pro/total",
-			data:{query, key},
-			success:function(data){
-				$("#total").html(`검색수: ${data}건`);
-				if(data > size){
-					$("#pagination").show();
-					//total 페이지 구하기
-					const totalPages = Math.ceil(data/size);
-	                $("#pagination").twbsPagination("changeTotalPages", totalPages, page)
-				}else{
-					$("#pagination").hide();
-					getList();
-				}
-			}
-		});
-	}
-	
-	function getList(){ //목록 구하는
 		const query = $(frm.query).val();
-		const key = $(frm.key).val();
+		
 		$.ajax({
 			type:"get",
 			url:"/pro/slist.json",
-			data:{page, size, query, key},
+			data:{page, size, key, query},
 			success:function(data){
-				if(data == 0){
+				$("#total").html(`검색수: ${data.total}건`);
+				if(data.total == 0){
 					$("#div_pro").html("<h3 class='text-center my-5'>검색자료가 존재하지 않습니다.</h3>");
 				}else{
-					const temp = Handlebars.compile($("#temp_pro").html());
+					const temp=Handlebars.compile($("#temp_pro").html());
 					$("#div_pro").html(temp(data));
+					
+					if(total != data.total){
+						const totalPages = Math.ceil(data.total/size);
+						$("#pagination").twbsPagination("changeTotalPages", totalPages, 1);
+						total = data.total;
+					}
+				}
+				if(data.total > size){
+					$("#paginagion").show();
+				}else{
+					$("#pagination").hide();
 				}
 			}
-		});
+		})
 	}
 	
 	$('#pagination').twbsPagination({
