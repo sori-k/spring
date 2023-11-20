@@ -1,0 +1,130 @@
+<div class="my-5">
+	<h1 class="text-center mb-5">강좌정보</h1>
+	<nav>
+  		<div class="nav nav-tabs" id="nav-tab" role="tablist">
+		    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" 
+		    	role="tab" aria-controls="nav-home" aria-selected="true">강좌정보</button>
+		    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" 
+    			role="tab" aria-controls="nav-profile" aria-selected="false">수강학생</button>
+  		</div>
+	</nav>
+	<div class="tab-content" id="nav-tabContent">
+		<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+			<div id="div_cou" class="row justify-content-center mt-5"></div>
+		</div>
+		<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+		  	<div id="div_enroll" class="mt-5"></div>
+		</div>
+	</div>
+</div>
+
+<script id="temp_cou" type="x-handlebars-template">
+	<div class="col-md-6">
+		<div class="card p-3">
+			<div>강좌이름: {{lname}} ({{lcode}})</div><hr>
+			<div>수강인원: {{persons}}명 / {{capacity}}명</div><hr>
+			<div>지도교수: {{pname}} ({{instructor}})</div><hr>
+			<div class="text-center">
+				<a href="/cou/update?lcode={{lcode}}" class="btn btn-success">정보수정</a>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script id="temp_enroll" type="x-handlebars-template">
+	<table class="table">
+		<tr>
+			<th>
+				<input type="checkbox" id="all"> <span class="ms-3">전체선택</span>
+			</th>
+			<th>수강학생 / 학생코드</th>
+			<th>학과 / 학년</th>
+			<th>수강신청일</th>
+			<th>점수 </th>
+			<div class="text-end"><button class="btn btn-outline-dark btn-sm">선택수정</button></div>
+		</tr>
+		{{#each .}}
+		<tr scode="{{scode}}">
+			<td><input type="checkbox" class="chk"></td>
+			<td>{{sname}} ({{scode}})</td>
+			<td>{{dept}} ({{year}})</td>
+			<td>{{edate}}</td>
+			<td>
+				<input value="{{grade}}" size="3" class="grade text-end">
+				<button class="btn-update btn btn-outline-dark">수정</button>
+			</td>
+		</tr>
+		{{/each}}
+	</table>
+</script>
+
+<script>
+	const lcode = "[[${param.lcode}]]";
+	
+	$("#nav-profile-tab").click();
+	
+	//전체 선택 체크박스 클릭했을때
+	$("#div_enroll").on("click", "#all", function(){
+		if($(this).is(":checked")){ //this는 all(전체선택 체크박스)
+			$("#div_enroll .chk").prop("checked", true);
+		}else{
+			$("#div_enroll .chk").prop("checked", false);
+		}
+	});
+	
+	//각 행의 체크박스 클릭했을때
+	$("#div_enroll").on("click", ".chk", function(){
+		const all = $("#div_enroll .chk").length;
+		const chk = $("#div_enroll .chk:checked").length;
+		
+		if(all == chk){//전체선택 되었으면
+			$("#div_enroll #all").prop("checked", true);
+		}else{
+			$("#div_enroll #all").prop("checked", false);
+		}
+	});
+	
+	//점수 수정버튼 눌렀을때
+	$("#div_enroll").on("click", ".btn-update", function(){
+		const tr = $(this).parent().parent();
+		const scode = tr.attr("scode");
+		const grade = tr.find(".grade").val();
+		
+		if(confirm(`${scode} 학생의 점수를 ${grade}로 수정할까요?`)){
+			$.ajax({
+			type:"post",
+			url:"/enroll/grade",
+			data:JSON.stringify({lcode, scode, grade}),
+			contentType:"application/JSON",
+			success:function(data){
+				alert("점수수정 완료!");
+				getEnroll();
+			}
+			})
+		}
+	});
+	
+	$.ajax({
+		type:"get",
+		url:"/cou/read.json",
+		data:{lcode},
+		success:function(data){
+			//console.log(data);
+			const temp = Handlebars.compile($("#temp_cou").html());
+			$("#div_cou").html(temp(data));
+		}
+	});
+	
+	getEnroll();
+	function getEnroll(){
+		$.ajax({
+			type:"get",
+			url:"/cou/enroll.json",
+			data:{lcode},
+			success:function(data){
+				const temp = Handlebars.compile($("#temp_enroll").html());
+				$("#div_enroll").html(temp(data));
+			}
+		});
+	}
+</script>

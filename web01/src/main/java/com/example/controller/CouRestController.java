@@ -36,4 +36,10 @@ public class CouRestController {
 		return dao.enroll(lcode);
 	}
 	
+	@GetMapping("/graph.json")
+	public List<HashMap<String, Object>> graph(){
+		return dao.graph();
+	}
+	
+	
 }

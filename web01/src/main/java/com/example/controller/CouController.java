@@ -21,5 +21,15 @@ public class CouController {
 		return "home";
 	}
 	
+	@GetMapping("/graph")
+	public String graph(Model model) {
+		model.addAttribute("pageName", "cou/chart");
+		return "home";
+	}
 	
+	@GetMapping("/graph1")
+	public String graph1(Model model) { //강좌별 평균점수
+		model.addAttribute("pageName", "cou/chart1");
+		return "home";
+	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.CourseMapper">
-    <select id="list" resultType="hashmap">
+    <select id="list" resultType="hashmap"> <!-- 강좌목록 -->
     	select *
     	from view_cou
     	<if test="key == 'lcode'">
@@ -43,5 +43,11 @@
     	select *
     	from cou_enroll
     	where lcode = #{lcode};
+    </select>
+    <select id="graph" resultType="hashmap"> <!-- 강좌별 평균점수 구하는 -->
+    	select e.lcode, lname, avg(grade) as avg
+		from enrollments e, courses c
+		where e.lcode = c.lcode
+		group by e.lcode;
     </select>
 </mapper>
