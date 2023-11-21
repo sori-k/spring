@@ -19,6 +19,7 @@ public class StuRestController {
 	
 	@GetMapping("/list.json") //stuController랑 이름이 중복되면 안되서 .json 붙임(패스 중복 불가)
 	public HashMap<String, Object> list(QueryVO vo){
+		System.out.println(vo.toString());
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("list", dao.list(vo));
 		map.put("total", dao.total(vo));

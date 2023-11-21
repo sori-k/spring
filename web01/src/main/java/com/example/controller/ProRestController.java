@@ -55,7 +55,7 @@ public class ProRestController {
 		dao.update(vo);
 	}
 	
-	@GetMapping("/slist.json")
+	@GetMapping("/slist.json") //목록
 	public HashMap<String, Object> slist(QueryVO vo){
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("list", dao.slist(vo));
