@@ -22,4 +22,46 @@
     	from shop
     	where title like concat('%', #{query}, '%') or maker like concat('%', #{query}, '%');
     </select>
+    <delete id="delete">
+    	delete from shop where pid= #{pid};
+    </delete>
+    <select id="read" resultType="hashmap">
+    	select *,date_format(regdate, '%Y-%m-%d %T') as fmtdate, format(lprice, 0) as fmtprice
+    	from shop
+    	where pid= #{pid}
+    </select>
+    <select id="info" resultType="hashmap"> <!-- 해당상품에 대해 특정 user가 좋아요를 했는지 알수 있음 -->
+    	select *,date_format(regdate, '%Y-%m-%d %T') fmtdate, format(lprice,0) fmtprice,
+		(select count(*) from favorites where uid=#{uid} and pid=#{pid}) ucnt
+		from shop
+		where pid=#{pid}
+	</select>
+    <update id="update">
+    	update shop
+    	set title = #{title}, lprice = #{lprice}, maker = #{maker}
+    	where pid = #{pid}
+    </update>
+    <update id="image">
+    	update shop
+    	set image = #{image}
+    	where pid = #{pid}
+    </update>
+    <update id="viewcnt">
+    	update shop
+    	set viewcnt = viewcnt +1
+    	where pid = #{pid};
+    </update>
+    <insert id="insert_favorites">
+		insert into favorites(uid, pid)
+		values(#{uid}, #{pid})
+	</insert>
+    <delete id="delete_favorites">
+		delete from favorites
+		where uid=#{uid} and pid=#{pid}
+	</delete>
+	<update id="update_favorites"> <!-- 좋아요 추가/삭제시 fcnt 값 변경 -->
+		update shop
+		set fcnt = fcnt + #{amount}
+		where pid = #{pid};
+	</update>
 </mapper>

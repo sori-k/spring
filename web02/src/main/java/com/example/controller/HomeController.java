@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController {
@@ -29,5 +31,11 @@ public class HomeController {
 			System.out.println("오류:" + e.toString());
 		}
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+	}
+	
+	@ResponseBody
+	@GetMapping("/deleteFile")
+	public void deleteFile(String file) {
+		new File("c:/" + file).delete();
 	}
 }

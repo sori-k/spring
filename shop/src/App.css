@@ -27,3 +27,12 @@ a {
 .navbar-nav .active {
   color: white;
 }
+
+.price {
+  font-size: 0.8rem;
+}
+
+.heart {
+  color: red;
+  cursor: pointer;
+}
