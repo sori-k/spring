@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.CartMapper">
+    <select id="list" resultType="hashmap">
+        select *
+		from view_cart
+		where uid = #{uid}
+		order by regdate desc
+		limit #{start}, #{size};
+    </select>
+    <select id="total" resultType="int">
+    	select count(*)
+    	from cart
+    	where uid = #{uid};
+    </select>
+    <insert id="insert">
+    	insert into cart(pid, uid)
+    	values(#{pid}, #{uid})
+    </insert>
+    <delete id="delete">
+    	delete from cart
+    	where cid = #{cid}
+    </delete>
+    <select id="check" resultType="int"> <!-- 장바구니에 있으면 1, 없으면 0으로 나오게 -->
+    	select count(*)
+    	from cart
+    	where pid = #{pid} and uid = #{uid}
+    </select>
+    <update id="update"> <!-- 수량 체크 -->
+    	update cart
+    	set qnt = qnt + #{qnt}
+    	where pid = #{pid} and uid = #{uid}
+    </update>
+    <update id="update_qnt">
+    	update cart
+		set qnt = #{qnt}
+		where cid = #{cid}
+    </update>
+    <select id="sum" resultType="String"> <!-- 총 합계 구하기 -->
+      select format(sum(lprice * qnt),0) as fmtsum
+      from view_cart
+      where uid=#{uid};
+   </select>
+</mapper>

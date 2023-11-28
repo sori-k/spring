@@ -40,6 +40,16 @@ const ShopInfo = () => {
         getShop();
     }
 
+    //장바구니버튼 눌렀을때
+    const onClickCart = async() => {
+        await axios.post("/cart/insert", {uid:sessionStorage.getItem("uid"), pid});
+        if(window.confirm("쇼핑을 계속 할까요?")){
+            window.location.href="/";
+        }else{
+            window.location.href="/cart/list";
+        }
+    }
+
     return (
         <div className='my-5'>
             <h1 className='text-center mb-5'>[{pid}] 상품정보</h1>
@@ -62,7 +72,8 @@ const ShopInfo = () => {
                     <hr/>
                     <div className='text-center'>
                         <Button variant='danger' className='px-4'>바로구매</Button>
-                        <Button variant='warning' className='px-4 ms-3'>장바구니</Button>
+                        <Button onClick={onClickCart}
+                            variant='warning' className='px-4 ms-3'>장바구니</Button>
                     </div>
                 </Col>
             </Row>
