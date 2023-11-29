@@ -6,4 +6,9 @@
         from users
         where uid =#{uid};
     </select>
+    <update id="update">
+    	update users
+    	set uname = #{uname}, phone = #{phone}, address1 = #{address1}, address2 = #{address2} <!-- 앞은 테이블 컬럼이름, 뒤는 vo에서 정한 이름 -->
+    	where uid = #{uid}
+    </update>
 </mapper>

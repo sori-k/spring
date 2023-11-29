@@ -10,6 +10,9 @@ import ShopUpdate from './shop/ShopUpdate';
 import LoginPage from './user/LoginPage';
 import {getCookie, delCookie} from '../common.js'
 import CartList from './shop/CartList.jsx';
+import MyPage from './user/MyPage.jsx';
+import OrderComplete from './order/OrderComplete.jsx';
+import OrderList from './order/OrderList.jsx';
 
 const NaviPage = () => {
     const location = useLocation();
@@ -40,6 +43,7 @@ const NaviPage = () => {
                         navbarScroll>
                         <Nav.Link href="/shop/search" className={path.indexOf('/shop/search') !== -1 && 'active'}>상품검색</Nav.Link>
                         <Nav.Link href="/shop/list" className={path.indexOf('/shop/') !== -1 && 'active'}>상품관리</Nav.Link>
+                        <Nav.Link href="/order/list" className={path.indexOf('/order/') !== -1 && 'active'}>주문목록</Nav.Link>
                         <Nav.Link href="/cart/list" className={path.indexOf('/cart/') !== -1 && 'active'}>장바구니</Nav.Link>
                     </Nav>
                     <Nav>
@@ -70,6 +74,9 @@ const NaviPage = () => {
             <Route path="/" element={<HomePage/>}/>
             <Route path="/shop/info/:pid" element={<ShopInfo/>}/>
             <Route path="/cart/list" element={<CartList/>}/>
+            <Route path="/mypage" element={<MyPage/>}/>
+            <Route path="/order/complete/:oid" element={<OrderComplete/>}/>
+            <Route path="/order/list" element={<OrderList/>}/>
         </Routes>
         </>
     )

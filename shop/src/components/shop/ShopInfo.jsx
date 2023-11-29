@@ -42,11 +42,16 @@ const ShopInfo = () => {
 
     //장바구니버튼 눌렀을때
     const onClickCart = async() => {
-        await axios.post("/cart/insert", {uid:sessionStorage.getItem("uid"), pid});
-        if(window.confirm("쇼핑을 계속 할까요?")){
-            window.location.href="/";
+        if(!sessionStorage.getItem("uid")){
+            sessionStorage.setItem("target", `/shop/info/${pid}`);
+            window.location.href="/login";
         }else{
-            window.location.href="/cart/list";
+            await axios.post("/cart/insert", {uid:sessionStorage.getItem("uid"), pid});
+            if(window.confirm("쇼핑을 계속 할까요?")){
+                window.location.href="/";
+            }else{
+                window.location.href="/cart/list";
+            }
         }
     }
 
