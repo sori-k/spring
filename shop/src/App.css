@@ -1,42 +1,48 @@
 .ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }
 
 .input-group-text {
-width: 120px;
-justify-content: center;
+    width: 120px;
+    justify-content: center;
 }
 
 .photo {
-border-radius: 50%;
-border: 1px solid gray;
-cursor: pointer;
+    border-radius: 50%;
+    border: 1px solid gray;
+    cursor: pointer;
 }
 
 a {
-  text-decoration: none !important;
-  font-size: 1rem;
-  padding: 5px;
-  margin: 0px 10px;
+    text-decoration: none !important;
+    font-size: 1rem;
+    padding: 5px;
+    margin: 0px 10px;
 }
 
 .navbar-nav .active {
-  color: white;
+    color: white;
 }
 
 .price {
-  font-size: 0.8rem;
+    font-size: 0.8rem;
 }
 
 .heart {
-  color: red;
-  cursor: pointer;
+    color: red;
+    cursor: pointer;
 }
 
 .cart_input_group {
-  max-width: 130px;  margin: 0 auto;
+    max-width: 130px;
+    margin: 0 auto;
+}
+
+.ck.ck-editor__editable:not(.ck-editor__nested-editable) {
+    min-height: 400px;
+    margin-bottom: 20px;
 }

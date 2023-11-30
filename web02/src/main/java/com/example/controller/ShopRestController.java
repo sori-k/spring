@@ -85,4 +85,40 @@ public class ShopRestController {
 		//dao.deleteFavorites(pid, uid);
 		service.deleteFavorites(pid, uid);
 	}
+	
+	@PostMapping("/update/content")
+	public void updateContent(@RequestBody ShopVO vo) {
+		dao.updateContent(vo);
+	}
+	
+	@PostMapping("/ckupload/{pid}")
+	public HashMap<String, Object> ckupload(@PathVariable int pid, MultipartHttpServletRequest multi){
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		MultipartFile file = multi.getFile("upload");
+		String path = "/upload/shop/" + pid + "/";
+		File filePath = new File(path);
+		
+		if(!filePath.exists()) {
+			filePath.mkdir();
+		}
+		
+		String fileName = System.currentTimeMillis() + ".jpg";
+		try {
+			file.transferTo(new File("c:" + path + fileName));
+			map.put("uploaded", 1); //몇 개 파일 업로드
+			map.put("url", "/display?file=" + path + fileName);
+			
+		}catch(Exception e) {
+			System.out.println("ckupload:" + e.toString());
+		}
+		
+		return map;
+	}
+	
+	@GetMapping("/chart1")
+	public List<HashMap<String, Object>> chart1(){
+		return dao.chart1();
+	}
+	
 }

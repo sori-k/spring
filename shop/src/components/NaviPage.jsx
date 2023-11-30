@@ -13,6 +13,8 @@ import CartList from './shop/CartList.jsx';
 import MyPage from './user/MyPage.jsx';
 import OrderComplete from './order/OrderComplete.jsx';
 import OrderList from './order/OrderList.jsx';
+import AdminOrderList from './admin/OrderList';
+import ChartExample from './chart/ChartExample.jsx';
 
 const NaviPage = () => {
     const location = useLocation();
@@ -41,10 +43,23 @@ const NaviPage = () => {
                         className="me-auto my-2 my-lg-0"
                         style={{ maxHeight: '100%' }}
                         navbarScroll>
-                        <Nav.Link href="/shop/search" className={path.indexOf('/shop/search') !== -1 && 'active'}>상품검색</Nav.Link>
-                        <Nav.Link href="/shop/list" className={path.indexOf('/shop/') !== -1 && 'active'}>상품관리</Nav.Link>
-                        <Nav.Link href="/order/list" className={path.indexOf('/order/') !== -1 && 'active'}>주문목록</Nav.Link>
-                        <Nav.Link href="/cart/list" className={path.indexOf('/cart/') !== -1 && 'active'}>장바구니</Nav.Link>
+                        {/* 관리자 메뉴 */}
+                        {sessionStorage.getItem("uid") === "admin" &&
+                        <>
+                            <Nav.Link href="/shop/search" className={path.indexOf('/shop/search') !== -1 && 'active'}>상품검색</Nav.Link>
+                            <Nav.Link href="/shop/list" className={path.indexOf('/shop/') !== -1 && 'active'}>상품관리</Nav.Link>
+                            <Nav.Link href="/admin/purchase" className={path.indexOf('/admin/') !== -1 && 'active'}>주문관리</Nav.Link>
+                            <Nav.Link href="/admin/chart" className={path.indexOf('/chart/') !== -1 && 'active'}>그래프</Nav.Link>
+                        </>
+                        }
+
+                        {/* 사용자 메뉴 */}
+                        {(sessionStorage.getItem("uid") && sessionStorage.getItem("uid") !== "admin") &&
+                        <>
+                            <Nav.Link href="/order/list" className={path.indexOf('/order/') !== -1 && 'active'}>주문목록</Nav.Link>
+                            <Nav.Link href="/cart/list" className={path.indexOf('/cart/') !== -1 && 'active'}>장바구니</Nav.Link>
+                        </>
+                        }
                     </Nav>
                     <Nav>
                         {sessionStorage.getItem("uid") ?
@@ -77,6 +92,8 @@ const NaviPage = () => {
             <Route path="/mypage" element={<MyPage/>}/>
             <Route path="/order/complete/:oid" element={<OrderComplete/>}/>
             <Route path="/order/list" element={<OrderList/>}/>
+            <Route path="/admin/purchase" element={<AdminOrderList/>}/>
+            <Route path="/admin/chart" element={<ChartExample/>}/>
         </Routes>
         </>
     )

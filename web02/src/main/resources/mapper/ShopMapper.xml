@@ -64,4 +64,16 @@
 		set fcnt = fcnt + #{amount}
 		where pid = #{pid};
 	</update>
+	<update id="update_content">
+		update shop
+		set content = #{content}
+		where pid = #{pid}
+	</update>
+	<select id="chart1" resultType="hashmap"> <!-- 상품별 댓글수 -->
+		select r.pid, title, count(*) as cnt
+		from review r, shop s
+		where r.pid = s.pid
+		group by r.pid
+		order by pid asc;
+	</select>
 </mapper>

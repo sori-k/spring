@@ -5,7 +5,14 @@ public class QueryVO { //DTO라고도 함
 	private int size;
 	private int page;
 	private int start;
+	private String key;
 	
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
 	public String getQuery() {
 		return query;
 	}

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.dao.PurchaseDAO;
 import com.example.domain.OrderVO;
 import com.example.domain.PurchaseVO;
+import com.example.domain.QueryVO;
 import com.example.domain.UserVO;
 import com.example.service.PurchaseService;
 
@@ -60,4 +61,18 @@ public class PurchaseRestController {
 		return dao.listOrders(oid);
 	}
 	
+	
+	@GetMapping("/admin/list.json")
+	public HashMap<String, Object> adminList(QueryVO vo){ //http://localhost:8080/purchase/admin/list.json?key=uid&size=2&page=1&query=blue
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("list", dao.listAdmin(vo));
+		map.put("total", dao.totalAdmin(vo));
+		
+		return map;
+	}
+	
+	@PostMapping("/update/status")
+	public void updateStatus(@RequestBody PurchaseVO vo) {
+		dao.updateStatus(vo);
+	}
 }

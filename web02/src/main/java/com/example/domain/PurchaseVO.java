@@ -11,7 +11,14 @@ public class PurchaseVO {
 	private String address2;
 	private int sum;
 	private List<OrderVO> orders;
+	private int status;
 	
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
 	public String getOid() {
 		return oid;
 	}

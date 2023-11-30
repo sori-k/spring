@@ -36,6 +36,7 @@ const OrderList = () => {
                         <th>주문일</th>
                         <th>전화번호</th>
                         <th>주문금액</th>
+                        <th>주문상태</th>
                         <th>상세보기</th>
                     </tr>
                 </thead>
@@ -47,6 +48,7 @@ const OrderList = () => {
                             <td>{p.fmtdate}</td>
                             <td>{p.phone}</td>
                             <td>{p.fmtsum}원</td>
+                            <td>{p.str_status}</td>
                             <td><ModalOrder p={p}/></td>
                         </tr>
                     )}
