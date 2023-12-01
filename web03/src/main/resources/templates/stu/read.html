@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+</head>
+<body>
+	<h1 id="scode"></h1>
+	<div id="div_cou"></div><hr>
+	<div id="div_enroll"></div>
+</body>
+
+<script id="temp_enroll" type="x-handlebars-template">
+	<table border="1" width="500">
+		{{#each .}}
+		<tr>
+			<td>{{lcode}}</td>
+			<td>{{lname}}</a></td>
+			<td>{{persons}} / {{capacity}}</td>
+			<td><button lcode="{{lcode}}">수강취소</button></td>
+		</tr>
+		{{/each}}
+	</table>
+</script>
+
+<script id="temp_cou" type="x-handlebars-template">
+	<select id="lcode">
+		{{#each .}}
+			<option value="{{lcode}}" {{fn_disabled persons capacity}}>
+				{{lcode}}:{{lname}}:{{persons}}/{{capacity}}
+			</option>
+		{{/each}}
+	</select>
+	<button id="btn-insert">수강신청</button>
+</script>
+
+<script> <!-- 수강인원 초과시 선택 불가 -->
+	Handlebars.registerHelper("fn_disabled", function(p, c){
+		if(p==c) return "disabled";
+	})
+</script>
+
+<script>
+	const scode = "[[${scode}]]";
+	$("#scode").html(scode + "의 수강신청");
+	
+	//수강신청버튼 클릭시
+	$("#div_cou").on("click", "#btn-insert", function(){
+		const lcode = $("#lcode").val();
+		$.ajax({
+			type:"get",
+			url:"/stu/enroll/check",
+			data:{scode, lcode},
+			success:function(data){
+				//alert(data); //학생 수강신청 목록에 없으면 0, 이미 있으면 1이 나옴
+				if(data == 0){
+					//수강신청
+					if(confirm("수강신청할까요?")){
+						$.ajax({
+							type:"post",
+							url:"/stu/enroll/insert",
+							data:JSON.stringify({lcode, scode}),
+							contentType:"application/JSON",
+							success:function(){
+								alert("수강신청완료!");
+								getList();
+								getCou();
+							}
+						})
+					}
+				}else{
+					alert("이미 수강신청한 강좌입니다.");
+				}
+			}
+		})
+	});
+	
+	//수강취소버튼 클릭시
+	$("#div_enroll").on("click", "button", function(){
+		const lcode = $(this).attr("lcode");
+		if(confirm(`${lcode}강좌를 취소할까요?`)){
+			$.ajax({
+				type:"post",
+				url:"/stu/enroll/delete",
+				data:JSON.stringify({lcode, scode}),
+				contentType:"application/JSON",
+				success:function(){
+					alert("수강신청취소!");
+					getList();
+					getCou();
+				}
+			})
+		}
+	});
+	
+	getList();
+	function getList(){
+		$.ajax({
+			type:"get",
+			url:"/stu/enroll/list.json/" + scode,
+			success:function(data){
+				const temp=Handlebars.compile($("#temp_enroll").html());
+				$("#div_enroll").html(temp(data));
+			}
+		});
+	}
+	
+	getCou();
+	function getCou(){
+		$.ajax({
+			type:"get",
+			url:"/cou/list.json",
+			success:function(data){
+				const temp=Handlebars.compile($("#temp_cou").html());
+				$("#div_cou").html(temp(data));
+			}
+		});
+	}
+</script>
+</html>
