@@ -70,12 +70,10 @@ public class UserController {
 		return result;
 	}
 	
-	//검색
-	@GetMapping("/list_search.json")
-	public HashMap<String, Object> list_search(QueryVO vo){
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("list_search", dao.list_search(vo));
-		map.put("total", dao.total(vo));
-		return map;
+	
+	@GetMapping("/list")
+	public List<UserVO> list1(QueryVO vo){
+		return dao.list(vo);
 	}
+	
 }

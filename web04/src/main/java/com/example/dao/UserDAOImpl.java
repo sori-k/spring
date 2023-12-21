@@ -18,7 +18,7 @@ public class UserDAOImpl implements UserDAO{
 	String namespace="com.example.mapper.UserMapper";
 	
 	@Override
-	public List<HashMap<String, Object>> list(QueryVO vo) {
+	public List<UserVO> list(QueryVO vo) {
 		return session.selectList(namespace + ".list", vo);
 	}
 
@@ -42,9 +42,5 @@ public class UserDAOImpl implements UserDAO{
 		return session.selectOne(namespace + ".total", vo);
 	}
 
-	@Override
-	public List<HashMap<String, Object>> list_search(QueryVO vo) {
-		return session.selectList(namespace + ".list_search", vo);
-	}
 
 }
