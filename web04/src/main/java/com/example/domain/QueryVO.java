@@ -1,8 +1,8 @@
 package com.example.domain;
 
 public class QueryVO {
-	private String key;
-	private String word;
+	private String key; //검색할때 필요
+	private String word; //검색할때 필요
 	private int size;
 	private int page;
 	private int start;
